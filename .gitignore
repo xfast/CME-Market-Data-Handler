@@ -1,0 +1,11 @@
+# Compiled binaries
+mdp3handler/secdef_extract
+mdp3handler/test
+mdp3handler/mdp3handler
+
+# Object files
+*.o
+*.obj
+
+# Debug files
+*.dSYM/
