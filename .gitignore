@@ -1,4 +1,5 @@
 # Compiled binaries
+mdp3handler/secdef_csv
 mdp3handler/secdef_extract
 mdp3handler/trade_print
 mdp3handler/stats_extract

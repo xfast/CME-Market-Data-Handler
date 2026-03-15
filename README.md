@@ -213,9 +213,33 @@ double price = to_price(mantissa, exponent);
 
 Several standalone utilities are included for working with CME MDP3 pcap capture files. All require `libpcap-dev` and must be compiled with `-DUSE_PCAP=true`.
 
+### secdef_csv — Security Definition CSV Export
+
+Extracts futures and options on futures definitions from a pcap file to CSV. Decodes both template 54 (futures) and template 55 (options) directly. Supports filtering by symbol/asset and instrument type.
+
+```bash
+cd mdp3handler
+g++ -DUSE_PCAP=true secdef_csv.cpp -O2 -pthread -lpcap -o secdef_csv
+
+# All definitions to stdout
+./secdef_csv capture.pcap
+
+# Write to CSV file
+./secdef_csv capture.pcap -o secdefs.csv
+
+# Filter by symbol (matches symbol, asset, underlying, and security group)
+./secdef_csv capture.pcap -s ES
+
+# Futures only for a given symbol
+./secdef_csv capture.pcap -s ES -t futures
+
+# Options on futures only
+./secdef_csv capture.pcap -s CL -t options -o cl_options.csv
+```
+
 ### secdef_extract — Security Definition Extractor
 
-Extracts all instrument/security definitions from a pcap file. Prints symbol, asset, CFI code, security group, price limits, and activation/expiration times.
+Extracts futures definitions from a pcap file and prints them in a formatted table with price limits and activation/expiration times.
 
 ```bash
 cd mdp3handler
@@ -258,7 +282,8 @@ g++ -DUSE_PCAP=true pcap_dump.cpp -O2 -pthread -lpcap -o pcap_dump
 ```
 mdp3handler/
 ├── main.cpp                 # Example entry point
-├── secdef_extract.cpp       # Security definition extractor
+├── secdef_csv.cpp           # Security definition CSV export (futures + options)
+├── secdef_extract.cpp       # Security definition extractor (futures)
 ├── trade_print.cpp          # Trade print reporter
 ├── stats_extract.cpp        # Session statistics extractor
 ├── pcap_dump.cpp            # Full message dump utility
