@@ -1,0 +1,15 @@
+# Compiled binaries
+mdp3handler/secdef_csv
+mdp3handler/secdef_extract
+mdp3handler/trade_print
+mdp3handler/stats_extract
+mdp3handler/pcap_dump
+mdp3handler/test
+mdp3handler/mdp3handler
+
+# Object files
+*.o
+*.obj
+
+# Debug files
+*.dSYM/
