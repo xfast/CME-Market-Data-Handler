@@ -209,11 +209,59 @@ CME sends prices as mantissa + exponent pairs. Use the provided helper:
 double price = to_price(mantissa, exponent);
 ```
 
+## Utility Applications
+
+Several standalone utilities are included for working with CME MDP3 pcap capture files. All require `libpcap-dev` and must be compiled with `-DUSE_PCAP=true`.
+
+### secdef_extract — Security Definition Extractor
+
+Extracts all instrument/security definitions from a pcap file. Prints symbol, asset, CFI code, security group, price limits, and activation/expiration times.
+
+```bash
+cd mdp3handler
+g++ -DUSE_PCAP=true secdef_extract.cpp -O2 -pthread -lpcap -o secdef_extract
+./secdef_extract capture.pcap
+```
+
+### trade_print — Trade Print Reporter
+
+Extracts and prints all trade executions from a pcap file with price, quantity, aggressor side, and timing. Includes per-security volume breakdown.
+
+```bash
+cd mdp3handler
+g++ -DUSE_PCAP=true trade_print.cpp -O2 -pthread -lpcap -o trade_print
+./trade_print capture.pcap
+```
+
+### stats_extract — Session Statistics Extractor
+
+Collects session statistics (open, high, low, settle prices) and trade volume per security from a pcap file.
+
+```bash
+cd mdp3handler
+g++ -DUSE_PCAP=true stats_extract.cpp -O2 -pthread -lpcap -o stats_extract
+./stats_extract capture.pcap
+```
+
+### pcap_dump — Full Message Dump
+
+Dumps every decoded MDP3 message from a pcap file with full field details. Useful for debugging and inspecting raw market data content.
+
+```bash
+cd mdp3handler
+g++ -DUSE_PCAP=true pcap_dump.cpp -O2 -pthread -lpcap -o pcap_dump
+./pcap_dump capture.pcap
+```
+
 ## Project Structure
 
 ```
 mdp3handler/
 ├── main.cpp                 # Example entry point
+├── secdef_extract.cpp       # Security definition extractor
+├── trade_print.cpp          # Trade print reporter
+├── stats_extract.cpp        # Session statistics extractor
+├── pcap_dump.cpp            # Full message dump utility
 ├── CallBackIF.hpp           # Abstract callback interface (subclass this)
 ├── CallBackImpl.hpp         # Empty callback implementation template
 ├── MessageProcessor.hpp     # Main message processor (live + pcap)
@@ -221,7 +269,7 @@ mdp3handler/
 ├── RecoveryProcessor.hpp    # Gap detection and recovery
 ├── udp_socket.hpp           # UDP multicast socket utilities
 ├── message_buffer.hpp       # Message buffer structure
-└── mktdata/                 # Auto-generated SBE message type headers (73 files)
+└── mktdata/                 # Auto-generated SBE message type headers (59 files)
 ```
 
 ## License
